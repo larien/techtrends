@@ -1,11 +1,43 @@
-## Docker commands used to build the application 
-# TODO: insert the docker build command
+## Docker commands used to build the application
+docker build [OPTIONS] PATH
+docker build -t techtrends .
+
+## Docker commands used to list the images and tags
+docker images
 
 ## Docker commands used to run the application
-# TODO: insert the docker run command
+docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
+docker run -d -p 5000:3111 techtrends
+
+## Docker commands used to stop the application
+docker stop {{ CONTAINER_ID }}
+docker stop 0b46f81ca84f
 
 ## Docker commands used to get the application logs
-# TODO: insert the docker logs command
+docker logs {{ CONTAINER_ID }}
+docker logs 0b46f81ca84f
+
+## Docker commands used to enter the container bash
+docker exec [OPTIONS] {{ CONTAINER_ID }} /bin/bash
+docker exec -i -t 0b46f81ca84f /bin/bash
+
+## Docker commands used to tag the application
+docker tag SOURCE_IMAGE[:TAG] TARGET_IMAGE[:TAG]
+docker tag techtrends larien/techtrends:v1.0.0
+
+## Docker commands used to push the application version
+docker push NAME[:TAG]
+docker push larien/techtrends:v1.0.0
 
 ## Logs from the container running the TechTrends application
-# TODO: paste logs from the Docker container 
+ * Serving Flask app "app" (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+ * Running on http://0.0.0.0:3111/ (Press CTRL+C to quit)
+[2022-02-03 20:24:57,904] INFO in app: getting posts
+172.17.0.1 - - [03/Feb/2022 20:24:57] "GET / HTTP/1.1" 200 -
+[2022-02-03 20:25:03,439] INFO in app: getting posts
+172.17.0.1 - - [03/Feb/2022 20:25:03] "GET /metrics HTTP/1.1" 200 -
+172.17.0.1 - - [03/Feb/2022 20:25:07] "GET /healthz HTTP/1.1" 200 -
