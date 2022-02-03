@@ -1,7 +1,19 @@
 import sqlite3
 
-from flask import Flask, jsonify, json, render_template, request, url_for, redirect, flash
+from flask import Flask, jsonify, render_template, request, url_for, redirect, flash
 from werkzeug.exceptions import abort
+from logging.config import dictConfig
+
+dictConfig({
+    'version': 1,
+    'formatters': {'default': {
+        'format': '[%(asctime)s] %(levelname)s %(message)s',
+    }},
+    'root': {
+        'level': 'INFO'
+    }
+})
+
 
 # Function to get a database connection.
 # This function connects to database with the name `database.db`
@@ -9,6 +21,18 @@ def get_db_connection():
     connection = sqlite3.connect('database.db')
     connection.row_factory = sqlite3.Row
     return connection
+
+# Define the Flask application
+app = Flask(__name__)
+app.config['SECRET_KEY'] = 'your secret key'
+
+# Function to get all the posts
+def get_posts():
+    app.logger.info(f"getting posts")
+    connection = get_db_connection()
+    post = connection.execute('SELECT * FROM posts').fetchall()
+    connection.close()
+    return post
 
 # Function to get a post using its ID
 def get_post(post_id):
@@ -18,22 +42,18 @@ def get_post(post_id):
     connection.close()
     return post
 
-# Define the Flask application
-app = Flask(__name__)
-app.config['SECRET_KEY'] = 'your secret key'
 
 # Define the main route of the web application 
 @app.route('/')
 def index():
-    connection = get_db_connection()
-    posts = connection.execute('SELECT * FROM posts').fetchall()
-    connection.close()
+    posts = get_posts()
     return render_template('index.html', posts=posts)
 
 # Define how each individual article is rendered 
 # If the post ID is not found a 404 page is shown
 @app.route('/<int:post_id>')
 def post(post_id):
+    app.logger.info(f"getting post: {post_id}")
     post = get_post(post_id)
     if post is None:
       return render_template('404.html'), 404
@@ -64,6 +84,23 @@ def create():
             return redirect(url_for('index'))
 
     return render_template('create.html')
+
+@app.route('/healthz')
+def healthz():
+    result = { 'result': 'OK - healthy' }
+    return jsonify(result)
+
+@app.route('/metrics')
+def metrics():
+    connection = get_db_connection()
+    connection_count = connection.total_changes
+    connection.close()
+    posts = get_posts()
+    result = {
+        'db_connection_count': connection_count,
+        'post_count': len(posts)
+    }
+    return jsonify(result)
 
 # start the application on port 3111
 if __name__ == "__main__":
