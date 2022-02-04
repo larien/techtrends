@@ -22,5 +22,6 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: "{{defaultContext}}:techtrends"
+          file: "{{defaultContext}}/Dockerfile"
           push: true
           tags: techtrends:latest
