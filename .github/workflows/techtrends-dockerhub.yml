@@ -26,6 +26,6 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: techtrends:latest
+          tags: larien/techtrends:latest
           secrets: |
             "github_token=${{ secrets.GIT_AUTH_TOKEN }}"
