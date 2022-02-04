@@ -22,6 +22,5 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
-          context: ./techtrends
           push: true
           tags: techtrends:latest
