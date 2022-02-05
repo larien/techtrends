@@ -1,0 +1,13 @@
+apiVersion: v1
+name: techtrends
+description: techtrends
+keywords:
+- techtrends
+- python
+- flask
+- docker
+- kubernetes
+version: 1.0.0
+maintainers:
+  - name: Larien
+    email: hello@larien.dev
