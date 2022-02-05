@@ -6,7 +6,7 @@ metadata:
   name: techtrends
   namespace: {{ .Values.namespace }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
       app: techtrends
@@ -31,8 +31,8 @@ spec:
               port: 3111
           resources:
             requests:
-              cpu: 250m
-              memory: 64Mi
+              cpu: {{ .Values.resources.requests.cpu }}
+              memory: {{ .Values.resources.requests.memory }}
             limits:
-              cpu: 500m
-              memory: 128Mi
+              cpu: {{ .Values.resources.limits.cpu }}
+              memory: {{ .Values.resources.limits.memory }}
