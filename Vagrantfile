@@ -8,6 +8,8 @@ Vagrant.configure("2") do |config|
   ## Set the image version
   # config.vm.box_version = "15.2.31.247"
 
+  config.vm.synced_folder '.', '/vagrant', disabled: true
+
   # st the static IP for the vagrant box
   config.vm.network "private_network", ip: "192.168.56.4"
   
@@ -16,5 +18,6 @@ Vagrant.configure("2") do |config|
     vb.memory = "4096"
     vb.cpus = 4
     vb.customize ["modifyvm", :id, "--ioapic", "on"]
+    vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
   end
 end
